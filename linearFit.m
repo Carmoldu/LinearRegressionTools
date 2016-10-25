@@ -1,4 +1,4 @@
-function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis )
+function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis, display )
 %Returns the least sqares linear fit (Y=beta0+beta1*X) parameters beta0
 %and beta1, as well as the R2 value of the fit.
 %INPUTS:
@@ -8,6 +8,8 @@ function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph,
 % -Title (optional): string with the title of the graph
 % -xAxis (optional): string with the x axis label
 % -yAxis (optional): string with the y axis label
+% -Display (optional): 'y'/'n', if 'y' it will print the results of the
+%                   lineal fit at the command window.
 %
 %OUTPUTS:
 % -b: linear regression parameters [beta0; beta1]
@@ -34,6 +36,9 @@ if nargin < 5
 end
 if nargin < 6
    yAxis = 'n';
+end
+if nargin < 7
+   display = 'n';
 end
 
 
@@ -75,27 +80,30 @@ deltaBeta1=tn_2(n)*sqrt(VarBeta1);
 %Plot
 
 if ~strcmp(graph,'n')
-    
-    h=figure(graph);
-    
-    scatter(x,y)
-    hold on
-    plot(x,yCalc)
-    
-    if ~strcmp(xAxis,'n')
-        xlabel(xAxis)
-    end
-    if ~strcmp(yAxis,'n')
-        ylabel(yAxis)
-    end
-    if ~strcmp(Title,'n')
-        title(Title)
-    end
-
-    grid on
-    
+    [h] = plotLinearFit( x, y, b, graph, Title, xAxis,yAxis);    
 end
 
+%%
+%Display of results on screen
+if strcmp(display,'y')
+    if strcmp(Title,'n')
+        Title=0;
+    end
+    if strcmp(xAxis,'n')
+        xAxis='x';
+    end
+    if strcmp(yAxis,'n')
+        yAxis='x';
+    end
+    
+    firstline = 'Linear Fit "%s":\n';
+    secondline =  '\t %s = %.3f +-%.3f + (%.3f +-%.3f)*%s\n';
+    thirdline = '\t R^2=%.3f \t Variance=%.3f\n\n';
+    FormatSpec=strcat(firstline,secondline,thirdline);
+    
+    fprintf(FormatSpec,Title,yAxis,b(1),deltaBeta0,b(2),deltaBeta1,xAxis,Rsq,theta2)     
+    
+end
 
 end
 

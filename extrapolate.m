@@ -1,4 +1,4 @@
-function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val)
+function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val, display)
 %This function will give you the extrapolated value following the linear
 %regression of a dataset as well as its uncertainity values.
 %
@@ -7,11 +7,13 @@ function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mod
 % -x: x values of the series
 % -theta2: variance
 % -mode: if you want to find the extrapolated value corresponding to a x
-%        value, type 'givenXvalue', if you want to find the extrapolated value
-%        corresponding to x=0 value type 'findY', you want to find the extrapolated value
-%        corresponding to y=0 value type 'findX'
-% -Value: value you want to extrapolate. If in 'givenXvalue' mode it is not
-%         entered, it will be computed for x=0
+%        value, type 'givenXvalue';  if you want to find the extrapolated value
+%        of X corresponding to y=0 type 'findX'
+% -Val: value you want to extrapolate. If in 'givenXvalue' mode it is not
+%         entered, it will be computed for x=0. Enter any number in 'findX'
+%         mode , it will always compute for Y=0
+% -Display (optional): 'y'/'n', if 'y' it will print the results of the
+%                   lineal fit at the command window.
 %
 %OUTPUTS:
 % -%extrapolatedValue: Value obtained from following the linear regression
@@ -24,6 +26,9 @@ function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mod
 
 if nargin<5
     val=0;
+end
+if nargin < 6
+   display = 'n';
 end
 
 n=length(x);
@@ -40,17 +45,9 @@ if strcmp('givenXvalue',mode)
     minimum=extrapolatedValue-confidence;
 
 
-elseif strcmp('findY',mode)
-    extrapolatedValue=b(1)+b(2)*val;
-
-    confidence=tn_2(n)*sqrt(theta2*(1/n+(xMean)^2/Sxx));
-
-    maximum=extrapolatedValue+confidence;
-    minimum=extrapolatedValue-confidence;
-
-
 elseif strcmp('findX',mode)
-    extrapolatedValue=(val-b(1))/b(2);
+    val=0;
+    extrapolatedValue=-b(1)/b(2);
 
 
     iter=0;
@@ -77,7 +74,29 @@ elseif strcmp('findX',mode)
         error=abs(minimum-minimumAux);
         minimum=minimumAux;
     end
+    
+    confidence=abs(maximum-minimum);
 
+end
+
+
+%%
+%Display
+if strcmp(display,'y')  
+    
+    firstline = 'Extrapolated value: (mode: %s)\n';
+    
+    if strcmp('givenXvalue',mode)
+        secondline =  '\t Query point: X=%.3f\n\t Extrapolated Value: Y=%.3f +-%.3f\n\n';
+    end
+    if strcmp('findX',mode)
+        secondline =  '\t Query point: Y=%i\n\t Extrapolated Value: X=%.3f +-%.3f\n\n';
+    end
+    
+    FormatSpec=strcat(firstline,secondline);
+    
+    fprintf(FormatSpec,mode,val,extrapolatedValue, confidence)     
+    
 end
 
 end

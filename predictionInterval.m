@@ -1,4 +1,4 @@
-function [ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta2, val)
+function [ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta2, val, display)
 %Returns the prediction interval of a data series for a given value
 %
 %INPUTS
@@ -10,6 +10,8 @@ function [ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta2, val)
 %        corresponding to x=0 value type 'findY', you want to find the extrapolated value
 %        corresponding to y=0 value type 'findX'
 % -Val: value for which you want to evaluate the prediction interval.
+% -Display (optional): 'y'/'n', if 'y' it will print the results of the
+%                   prediction interval at the command window.
 %
 %OUTPUTS:
 % -ymin: minimum value of the prediction interval at x=val
@@ -17,6 +19,10 @@ function [ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta2, val)
 % -deltaY: abs(ymin-ymax)
 %
 %By: Carles Molins Duran
+
+if nargin < 5
+   display = 'n';
+end
 
 n=length(x);
 
@@ -27,5 +33,16 @@ deltaY=tn_2(n)*sqrt(theta2*(1+1/n+(val-xMean)^2/Sxx));
 
 ymin=b(1)+b(2)*val-deltaY;
 ymax=b(1)+b(2)*val+deltaY;
+
+
+if strcmp(display,'y')  
+    firstline = 'Prediction interval:\n';
+    secondline =  '\t Query point: X=%.3f\t Y=%.3f\n\tYmin=%.3f\t Ymax=%.3f\n\n';
+
+    FormatSpec=strcat(firstline,secondline);
+    
+    fprintf(FormatSpec,val, b(1)+b(2)*val, ymin, ymax)     
+    
+end
 
 end

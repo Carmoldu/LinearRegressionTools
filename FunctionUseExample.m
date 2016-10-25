@@ -26,26 +26,24 @@ y = data120CR(:,4);
 
 %Remove outliers
 [ xNew, yNew ,~, bOld] = removeOutliers( x, y, 1, 'Removing outliers', 'Ve', 'Roll angle' );
-legend('Data points','linear fit','Removed points','95% confidence limits')
+legend('Data points','linear fit','Removed points','95% confidence limits');
 
 %Linear fit
-[  b, Rsq, theta21, deltaBeta0, deltaBeta1, ~] = linearFit( xNew, yNew, 2, 'Linear fit', 'Ve', 'Roll angle' );
+[  b, Rsq, theta21, deltaBeta0, deltaBeta1, ~] = linearFit( xNew, yNew, 2, 'Linear fit', 'Ve', 'Roll angle', 'y');
 legend('Data points','linear fit')
 
 %Extrapolation
-[  b, Rsq, theta22, deltaBeta0, deltaBeta1, ~] = linearFit( xNew, yNew, 3, 'Extrapolation', 'Ve', 'Roll angle' );
-
-[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'givenXvalue', 80);
-[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'findY');
-[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'findX');
-plotExtrapolation( b, xNew, theta2, -60, 80, 3 );
+plotLinearFit( xNew, yNew, b, 3, 'Extrapolation', 'Ve', 'Roll angle');
+[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'givenXvalue', 80,'y');
+[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'findX',0 ,'y');
+plotExtrapolation( b, xNew, theta22, -60, 80, 3 );
 
 legend('Data points','linear fit','Extrapolated value','Extrapolation interval')
 
 %Prediction interval
-[  b, Rsq, theta21, deltaBeta0, deltaBeta1, ~] = linearFit( x, y, 4, 'Prediction Interval', 'Ve', 'Roll angle' );
-
-plotPredictionInterval( b, x, theta21, -60,80, 4);
+plotLinearFit( xNew, yNew, b, 4, 'Prediction Interval', 'Ve', 'Roll angle');
+[ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta22, 4, 'y');
+plotPredictionInterval( b, x, theta22, -60,80, 4);
 legend('Data points','linear fit','Prediction interval')
 
 
