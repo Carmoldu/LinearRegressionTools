@@ -1,4 +1,4 @@
-function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val, display)
+function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val, display, report)
 %This function will give you the extrapolated value following the linear
 %regression of a dataset as well as its uncertainity values.
 %
@@ -14,6 +14,9 @@ function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mod
 %         mode , it will always compute for Y=0
 % -Display (optional): 'y'/'n', if 'y' it will print the results of the
 %                   lineal fit at the command window.
+% -Report (optional): if filled with a string, it will create (or open if
+%                     it already exists) a file where it will print the results. Remember to
+%                     add .txt at the end of the name.
 %
 %OUTPUTS:
 % -%extrapolatedValue: Value obtained from following the linear regression
@@ -29,6 +32,9 @@ if nargin<5
 end
 if nargin < 6
    display = 'n';
+end
+if nargin < 7
+   report = 'n';
 end
 
 n=length(x);
@@ -99,5 +105,25 @@ if strcmp(display,'y')
     
 end
 
+%%
+%report
+if ~strcmp(report,'n')  
+    
+    firstline = 'Extrapolated value: (mode: %s)\n';
+    
+    if strcmp('givenXvalue',mode)
+        secondline =  '\t Query point: X=%.3f\n\t Extrapolated Value: Y=%.3f +-%.3f\n\n';
+    end
+    if strcmp('findX',mode)
+        secondline =  '\t Query point: Y=%i\n\t Extrapolated Value: X=%.3f +-%.3f\n\n';
+    end
+    
+    FormatSpec=strcat(firstline,secondline);
+    
+    file=fopen(report,'a+t');
+    fprintf(file, FormatSpec,mode,val,extrapolatedValue, confidence);   
+    fclose(file);
+    
+end
 end
 

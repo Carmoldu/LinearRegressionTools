@@ -1,4 +1,4 @@
-function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis, display )
+function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis, display, report )
 %Returns the least sqares linear fit (Y=beta0+beta1*X) parameters beta0
 %and beta1, as well as the R2 value of the fit.
 %INPUTS:
@@ -10,6 +10,8 @@ function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph,
 % -yAxis (optional): string with the y axis label
 % -Display (optional): 'y'/'n', if 'y' it will print the results of the
 %                   lineal fit at the command window.
+% -Report (optional): if filled with a string, it will create (or open if it already exists) a file where it will print the results.
+%
 %
 %OUTPUTS:
 % -b: linear regression parameters [beta0; beta1]
@@ -39,6 +41,9 @@ if nargin < 6
 end
 if nargin < 7
    display = 'n';
+end
+if nargin < 8
+   report = 'n';
 end
 
 
@@ -86,7 +91,7 @@ end
 %%
 %Display of results on screen
 if strcmp(display,'y')
-    if strcmp(Title,'n')
+    if strcmp(Title,'')
         Title=0;
     end
     if strcmp(xAxis,'n')
@@ -105,5 +110,28 @@ if strcmp(display,'y')
     
 end
 
+%%
+%Report
+if ~strcmp(report,'n')
+    if strcmp(Title,'n')
+        Title='';
+    end
+    if strcmp(xAxis,'n')
+        xAxis='x';
+    end
+    if strcmp(yAxis,'n')
+        yAxis='x';
+    end
+    
+    firstline = 'Linear Fit "%s":\n';
+    secondline =  '\t %s = %.3f +-%.3f + (%.3f +-%.3f)*%s\n';
+    thirdline = '\t R^2=%.3f \t Variance=%.3f\n\n';
+    FormatSpec=strcat(firstline,secondline,thirdline);
+    
+    file=fopen(report,'a+t');
+    fprintf(file,FormatSpec,Title,yAxis,b(1),deltaBeta0,b(2),deltaBeta1,xAxis,Rsq,theta2); 
+    fclose(file);
+    
+end
 end
 

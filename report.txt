@@ -1,0 +1,16 @@
+Linear Fit "Linear fit":
+	 Roll angle = -0.490 +-0.109 + (0.159 +-0.005)*Ve
+	 R^2=0.946 	 Variance=0.575
+
+Extrapolated value: (mode: givenXvalue)
+	 Query point: X=80.000
+	 Extrapolated Value: Y=12.246 +-0.410
+
+Extrapolated value: (mode: findX)
+	 Query point: Y=0
+	 Extrapolated Value: X=3.076 +-1.326
+
+Prediction interval:
+	 Query point: X=4.000	 Y=0.147
+	Ymin=-1.342	 Ymax=1.636
+
