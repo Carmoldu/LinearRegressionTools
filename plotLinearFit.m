@@ -33,7 +33,9 @@ yCalc = X*b;
 
 h=figure(graph);
 
-scatter(x,y)
+m=scatter(x,y,'filled');
+s = 10;
+set(m, 'SizeData', s)
 hold on
 plot(x,yCalc)
     

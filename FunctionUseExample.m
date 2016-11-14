@@ -29,21 +29,21 @@ y = data120CR(:,4);
 legend('Data points','linear fit','Removed points','95% confidence limits');
 
 %Linear fit
-[  b, Rsq, theta21, deltaBeta0, deltaBeta1, ~] = linearFit( xNew, yNew, 2, 'Linear fit', 'Ve', 'Roll angle', 'y','report.txt');
+[  b, Rsq, theta2, deltaBeta0, deltaBeta1, ~] = linearFit( xNew, yNew, 2, 'Linear fit', 'Ve', 'Roll angle', 'y','report.txt');
 legend('Data points','linear fit')
 
 %Extrapolation
 plotLinearFit( xNew, yNew, b, 3, 'Extrapolation', 'Ve', 'Roll angle');
-[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'givenXvalue', 80,'y','report.txt');
-[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta22, 'findX',0 ,'y','report.txt');
-plotExtrapolation( b, xNew, theta22, -60, 80, 3 );
+[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta2, 'givenXvalue', 80,'y','report.txt');
+[ extrapolatedValue, maximum, minimum] = extrapolate( b, xNew, theta2, 'findX',0 ,'y','report.txt');
+plotExtrapolation( b, xNew, theta2, -60, 80, 3 );
 
 legend('Data points','linear fit','Extrapolated value','Extrapolation interval')
 
 %Prediction interval
 plotLinearFit( xNew, yNew, b, 4, 'Prediction Interval', 'Ve', 'Roll angle');
-[ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta22, 4, 'y','report.txt');
-plotPredictionInterval( b, x, theta22, -60,80, 4);
+[ ymin,ymax,deltaY ] = predictionInterval(  b, x, theta2, 4, 'y','report.txt');
+plotPredictionInterval( b, x, theta2, -60,80, 4);
 legend('Data points','linear fit','Prediction interval')
 
 

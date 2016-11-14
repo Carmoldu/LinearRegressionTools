@@ -1,5 +1,7 @@
 function [ xNew, yNew, inMargins ,b] = removeOutliers( x, y, graph, Title, xAxis, yAxis )
 %Removes the outliers that are out of the 95% confidence level
+%
+%[ xNew, yNew, inMargins ,b] = removeOutliers( x, y, graph, Title, xAxis, yAxis )
 %INPUTS:
 % -x: x values
 % -y: y values

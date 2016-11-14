@@ -1,6 +1,7 @@
 function [ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val, display, report)
 %This function will give you the extrapolated value following the linear
 %regression of a dataset as well as its uncertainity values.
+%[ extrapolatedValue, maximum, minimum] = extrapolate( b, x, theta2, mode, val, display, report)
 %
 %INPUTS
 % -b: linear regression parameters [b0; b1]

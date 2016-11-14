@@ -2,6 +2,7 @@ function [  ] = plotPredictionInterval( b, x, theta2, xmin,xmax, Fig)
 %Plots on figure 'Fig' the prediction interval of the range comprised between
 %xmin and xmax.
 %
+%plotPredictionInterval( b, x, theta2, xmin,xmax, Fig)
 %INPUTS:
 % -b: linear regression parameters [b0; b1]
 % -x: x values of the series
@@ -25,7 +26,7 @@ end
 
 figure(Fig)
 
-plot(xVal,maximum,'-k')
-plot(xVal,minimum,'-k')
+plot(xVal,maximum,'-.k')
+plot(xVal,minimum,'-.k')
 end
 

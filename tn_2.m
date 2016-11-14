@@ -32,7 +32,7 @@ table=[10   2.228
 
 
 if x<10
-    error('Not enough data points!')
+    out=2.228;
 elseif    x>120
     out=1.96;
 else

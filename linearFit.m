@@ -1,6 +1,8 @@
 function [ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis, display, report )
 %Returns the least sqares linear fit (Y=beta0+beta1*X) parameters beta0
 %and beta1, as well as the R2 value of the fit.
+%
+%[ b, Rsq, theta2, deltaBeta0, deltaBeta1, h ] = linearFit( x, y, graph, Title, xAxis, yAxis, display, report )
 %INPUTS:
 % -x: x values
 % -y: y values
@@ -86,6 +88,8 @@ deltaBeta1=tn_2(n)*sqrt(VarBeta1);
 
 if ~strcmp(graph,'n')
     [h] = plotLinearFit( x, y, b, graph, Title, xAxis,yAxis);    
+else 
+    h=0;
 end
 
 %%
